@@ -1,0 +1,159 @@
+.banner{
+  height: 38vh;
+  background-color: #c8d7d2;
+  padding: 30px;
+
+}
+
+
+
+.image--cover {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center right;
+  }
+
+  .image--logo{
+    width: 100px;
+    float:right;
+  }
+
+.wrapper {
+    position: relative;
+    background-color:transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -150px;
+  }
+  
+  .wrapper .wrapper-container {
+    position: relative;
+    width: 800px;
+    min-height: 380px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    overflow: hidden;
+  }
+
+  .division1{
+    padding:40px
+  }
+
+
+  .month-dropdown{
+    width:200px;
+    padding:10px;
+    border-radius: 10px;
+    background-color: #c8d7d2;
+    border: none;
+  }
+
+  .month-dropdown:focus{
+    border: none;
+  }
+
+  .division2{
+    background-color: #dbdada;
+    padding:20px;
+  }
+  .division2 span,h4{
+    display: flex;
+    justify-content: end;
+  }
+
+  .division3{
+    padding:20px;
+  }
+
+  .button-1 {
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #1a1a1a; 
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 20px;
+    list-style: none;
+    margin: 0;
+    outline: none;
+    padding: 10px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    touch-action: manipulation;
+    width:50%;
+  }
+
+  .spaced-row {
+    border-spacing: 0;
+    border-collapse: separate;
+  }
+  .spaced-row td {
+    padding-bottom: 10px;
+  }
+
+
+  @media (max-width:768px){
+    .division1 h5{
+      font-size: 1.02rem;
+    }
+    .month-dropdown{
+      width:100px;
+      margin-top: -35px;
+    }
+    .division2 p{
+      font-size: 1rem;
+    }
+  }
+
+  /*  */
+
+  .form-group {
+    position: relative;
+    margin-bottom: 30px;
+  }
+  
+  label {
+    position: absolute;
+    top: -10px; 
+    left: 21px;
+    background: white;
+    padding: 0 5px;
+    color: #333;
+    font-size: 12px;
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid rgb(160, 160, 160); 
+    border-radius: 13px;
+    font-size: 14px;
+  }
+  
+  input::placeholder, select::placeholder {
+    color: #ccc;
+  }
+  
+  .modal-body form .form2{
+    border-left: 2px rgb(250, 63, 63);
+    margin-top: 55px;
+  }
+  
+  @media (max-width: 768px) {
+    .modal-body form .form2{
+      border-left: none;
+      border-top: 2px rgb(250, 63, 63);
+    }
+    .save-btn{
+      margin-right: 57px;
+    }
+  }

@@ -1,0 +1,180 @@
+.navbar .navbar-toggler {
+    border-color: rgba(255,255,255,.1);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.nav-link > i {
+    margin-right: 10px; 
+}
+
+.form-control {
+    border-color: #f8f9fa;
+    background-color: #f8f9fa;
+}
+
+.form-control:focus {
+  outline: none;  
+  border-color: #f8f9fa; 
+  box-shadow: none; 
+}
+
+.wrapper-content{
+    width: 100%;
+    min-height: 87vh;
+    padding:30px;
+    background-color: #ffffff;
+    border-radius: 50px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.rounded-circle {
+    border: 2px solid #ffffff; 
+}
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+    position: absolute;
+    margin-left: -12px;
+}
+
+.btn-close{
+    font-size: 13px;
+}
+
+
+/* ----- */
+
+.search-container{
+    background-color: #ffffff;
+    border-radius: 50px;
+    height: 42px;
+    width:300px;
+    padding-left: 15px;
+    border: 2px solid rgb(161, 161, 161);
+}
+
+/* CSS */
+.add-btn {
+    appearance: none;
+    background-color: #2ea44f;
+    border: 1px solid rgba(27, 31, 35, .15);
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 6px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    border-radius: 50px;
+  }
+  
+  .add-btn:focus:not(:focus-visible):not(.focus-visible) {
+    box-shadow: none;
+    outline: none;
+  }
+  
+  .add-btn:hover {
+    background-color: #2c974b;
+  }
+  
+  .add-btn:focus {
+    box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
+    outline: none;
+  }
+  
+  .add-btn:disabled {
+    background-color: #94d3a2;
+    border-color: rgba(27, 31, 35, .1);
+    color: rgba(255, 255, 255, .8);
+    cursor: default;
+  }
+  
+  .add-btn:active {
+    background-color: #298e46;
+    box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+  }
+
+
+
+/*  */
+.form-group {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+label {
+  position: absolute;
+  top: -10px; 
+  left: 21px;
+  background: white;
+  padding: 0 5px;
+  color: #333;
+  font-size: 12px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgb(160, 160, 160); 
+  border-radius: 13px;
+  font-size: 14px;
+}
+
+
+input::placeholder, select::placeholder {
+  color: #ccc;
+}
+
+/* Focus styles to outline the box when focused */
+/* input:focus, select:focus, textarea:focus {
+  border:2px solid var(--secondary);
+}
+input:focus + label, select:focus + label , textarea:focus + label{
+  color: var(--secondary);
+} */
+
+.img-container{
+    height: 60px;
+    width: 60px;
+    border: 1px solid #ccc; 
+    border-radius: 15px;
+}
+.button-14{
+    border: none;
+    margin-left: 10px;
+    margin-top: 10px;
+    border-radius: 20px;
+    font-size:11px;
+}
+.save-btn{
+    width:150px;
+    height:40px;
+    border: none;
+    border-radius: 15px;
+    background-color: rgb(250, 63, 63);
+    color: white;
+    float: inline-end;
+    margin-left: 100px;
+}
+
+.item-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Optional: adds space between items */
+}
+
+.item {
+  flex: 0 1 auto; /* Allows items to shrink and wrap */
+}

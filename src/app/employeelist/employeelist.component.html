@@ -1,0 +1,259 @@
+
+
+
+<div class="header-title mb-4">
+    <h4>EMPLOYEE LIST</h4>
+</div>
+<div class="wrapper-content">
+        <p-table
+            #dt
+            [value]="filteredItems"
+            dataKey="id"
+            [rowHover]="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+            [style]="{'border':'none','font-size':'13px'}"
+        >
+            <ng-template pTemplate="caption">
+                <div class="row" style="padding-left:15px">
+                    <div class="search-container col-md-3">
+                        <i class="bi bi-search"></i>
+                        <span class="p-input-icon-left">
+                            <input pInputText type="text" class="form-control" [(ngModel)]="searchTerm"
+                            (input)="onSearch()" placeholder="Search..." style="background-color: #ffffff;font-size: 13px;border: none;" />  
+                        </span>
+                    </div>
+                    <div class="col-md d-flex justify-content-end">
+                        <button class="add-btn" role="button" data-bs-toggle="modal" data-bs-target="#AddEmployeeModal" (click)="getDesignationCompany()">
+                            <i class="bi bi-plus"></i> Add Employee
+                        </button>
+                    </div>
+                </div>
+            </ng-template>
+            
+            <ng-template pTemplate="header">
+                <tr>
+                 
+                    <th pSortableColumn="name">
+                        <div class="flex justify-content-between align-items-center">First Name</div>
+                    </th>
+                    <th pSortableColumn="name">
+                        <div class="flex justify-content-between align-items-center">Last Name</div>
+                    </th>
+                    <th pSortableColumn="name">
+                        <div class="flex justify-content-between align-items-center">Designation</div>
+                    </th>
+                    <th pSortableColumn="country.name">
+                        <div class="flex justify-content-between align-items-center">Email </div>
+                    </th>
+                    <th pSortableColumn="date" >
+                        <div class="flex justify-content-between align-items-center">Phone</div>
+                    </th>
+                    <th pSortableColumn="date" >
+                        <div class="flex justify-content-between align-items-center">Whatsapp</div>
+                    </th>
+                    <th pSortableColumn="balance" >
+                        <div class="flex justify-content-between align-items-center">
+                            Status
+                        </div>
+                    </th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-employeedata>
+                <tr class="p-selectable-row">
+              
+                    <td>{{ employeedata.first_name}}</td>
+                    <td>{{ employeedata.last_name}}</td>
+                    <td>{{ employeedata.role}}</td>
+                    <td>{{ employeedata.email }}</td>
+                    <td>{{ employeedata.phone_without_whatsapp}}</td>
+                    <td>{{ employeedata.phone_with_whatsapp }}</td>
+                    
+                   <td>
+                        <p-tag [value]="getStatusValue(employeedata.is_active)" [severity]="getSeverity(employeedata.is_active)" (click)="statusUpdate($event,employeedata.user_id,employeedata.is_active)"></p-tag>
+                    </td>
+                    <td style="text-align: center">
+                        
+                            <i class="bi bi-three-dots" style="font-size: 14px;" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        
+                        <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item"  (click)="updatePopup(employeedata.user_id)"><i class="bi bi-pencil-square"></i>&nbsp;Edit</a></li>
+                            <li><a class="dropdown-item" (click)="deleteEmployee($event, employeedata.user_id)"><i class="bi bi-trash"></i>&nbsp;Delete</a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8">No employee found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        
+        <p-toast></p-toast>
+        <p-confirmPopup></p-confirmPopup>
+</div>
+
+
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="AddEmployeeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Employee Registration  </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form (ngSubmit)="onemployeeRegister()" #employeeForm="ngForm">
+            <div class="form-group">
+              <input type="text" name="first_name" [(ngModel)]="employeeInsert.first_name" placeholder="Enter First Name" required>
+              <label>First Name</label>
+              <div *ngIf="submitted && !employeeInsert.first_name" class="invalid-feedback">
+                First Name is required.
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <input type="text" [(ngModel)]="employeeInsert.last_name" name="last_name" placeholder="Enter Last Name">
+              <label>Last Name</label>
+            </div>
+            
+            <div class="form-group">
+              <input type="text" name="phone_without_whatsapp" [(ngModel)]="employeeInsert.phone_without_whatsapp" placeholder="Enter number without Whatsapp" minlength="10" maxlength="10" (keypress)="validateNumber($event)">
+              <label>Phone Without Whatsapp</label>
+              <div *ngIf="submitted && phoneWithoutWhatsappInvalid" class="invalid-feedback">
+                Number must be exactly 10 digits
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <input type="text" name="phone_with_whatsapp" [(ngModel)]="employeeInsert.phone_with_whatsapp" placeholder="Enter Whatsapp number" minlength="10" maxlength="10" (keypress)="validateNumber($event)">
+              <label>Whatsapp Number</label>
+              <div *ngIf="submitted && phoneWithWhatsappInvalid" class="invalid-feedback">
+                Number must be exactly 10 digits
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <input type="email" name="email" [(ngModel)]="employeeInsert.email" placeholder="Enter email address">
+              <label>Email</label>
+              <!-- <div *ngIf="submitted && !isDriver() && !employeeInsert.email" class="invalid-feedback">
+                Email is required.
+              </div> -->
+              <div *ngIf="submitted && emailInvalid" class="invalid-feedback">
+                <div>Email must be a valid email address.</div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Team</label>
+              <select name="role_id" [(ngModel)]="employeeInsert.role_id" required>
+                <option value="" selected>Select Team</option>
+                <option *ngFor="let option of role" [value]="option.role_id">{{ option.role }}</option>
+              </select>
+              <div *ngIf="submitted && !employeeInsert.role_id" class="invalid-feedback">
+                Role is required.
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <input type="password" name="password" [(ngModel)]="employeeInsert.password" placeholder="Enter password">
+              <label>Password</label>
+              <div *ngIf="submitted && !employeeInsert.password" class="invalid-feedback">
+                Password is required.
+              </div>
+            </div>
+            
+            <div class="error_msg col-md-12 mb-3" *ngIf="errorMessageView">
+              <i class="fa fa-times-circle"></i>&nbsp;{{ errorMessage }}
+            </div>
+            
+            <div class="form-group">
+              <button class="save-btn" type="submit">Register</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+    <!-- update modal -->
+
+  
+    <p-dialog header="Update Employee" [(visible)]="updateModalVisible" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false" [resizable]="false">
+      <div class="form-group mt-2">
+        <input type="text" [(ngModel)]="employees.first_name" name="first_name" placeholder="Enter First Name" required>
+        <label for="first_name">First Name</label>
+        <div *ngIf="submitted && !employees.first_name" class="invalid-feedback">
+          First Name is required.
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <input type="text" [(ngModel)]="employees.last_name" name="last_name" placeholder="Enter Last Name">
+        <label for="last_name">Last Name</label>
+      </div>
+      
+      <div class="form-group">
+        <input type="text" [(ngModel)]="employees.phone_without_whatsapp" name="phone_without_whatsapp" placeholder="Enter number without Whatsapp" (input)="validatePhnNumber($event)">
+        <label for="phone_without_whatsapp">Phone</label>
+        <div *ngIf="showNonNumericError1">
+          <small class="text-danger">Only numbers are allowed</small>
+        </div>
+        <div *ngIf="showInvalidLengthError1">
+          <small class="text-danger">Number must be exactly 10 digits</small>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <input type="text" [(ngModel)]="employees.phone_with_whatsapp" name="phone_with_whatsapp" placeholder="Enter Whatsapp number" (input)="validateWhtsappNumber($event)">
+        <label>Whatsapp Number</label>
+        <div *ngIf="showNonNumericError2">
+          <small class="text-danger">Only numbers are allowed</small>
+        </div>
+        <div *ngIf="showInvalidLengthError2">
+          <small class="text-danger">Number must be exactly 10 digits</small>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <input type="text" [(ngModel)]="employees.email" name="email" placeholder="Enter email address">
+        <label for="email">Email</label>
+        <!-- <div *ngIf="submitted && !isDrivers() && !employees.email" class="invalid-feedback">
+          Email is required.
+        </div> -->
+        <div *ngIf="submitted && emailInvalid" class="invalid-feedback">
+          <div>Email must be a valid email address.</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="role_id">Role</label>
+        <select [(ngModel)]="employees.role_id" name="role_id" id="role_id">
+          <option value="" disabled>Select role</option>
+          <option *ngFor="let option of role" [value]="option.role_id">{{ option.role }}</option>
+        </select>
+        <div *ngIf="submitted && !employees.role_id" class="invalid-feedback">
+          Role is required.
+        </div>
+      </div>
+      
+      <div class="error_msg col-md-12 mb-3" *ngIf="errorMessageView">
+        <i class="fa fa-times-circle"></i>&nbsp;{{ errorMessage }}
+      </div>
+      
+      <div class="form-group">
+        <button class="save-btn" type="submit" (click)="onEmployeeUpdate($event)">Update</button>
+      </div>
+    </p-dialog>
+    

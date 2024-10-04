@@ -1,0 +1,185 @@
+
+
+
+<div class="header-title mb-4">
+    <h4>COMPANY LIST</h4>
+</div>
+<div class="wrapper-content">
+        <p-table
+            #dt
+            [value]="filteredItems"
+            dataKey="id"
+            [rowHover]="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[5,10, 25, 50]"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [style]="{'border':'none','font-size':'13px'}"
+        >
+
+
+        <ng-template pTemplate="caption">
+            <div class="row" style="padding-left:15px">
+              <div class="search-container col-md-3">
+                <i class="bi bi-search"></i>
+                <span class="p-input-icon-left">
+                    <input pInputText type="text" class="form-control" [(ngModel)]="searchTerm"
+                    (input)="onSearch()" placeholder="Search..." style="background-color: #ffffff;font-size: 13px;border: none;" />                      
+                </span>
+            </div>
+              <div class="col-md d-flex justify-content-end">
+                <button class="add-btn" role="button" data-bs-toggle="modal" data-bs-target="#AddCompanyModal" (click)="resetForm()">
+                  <i class="bi bi-plus"></i> Add Company
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="name">
+                <div class="flex justify-content-between align-items-center">
+                  Company Name
+                </div>
+              </th>
+              <th pSortableColumn="email">
+                <div class="flex justify-content-between align-items-center">
+                  Email
+                </div>
+              </th>
+              <th pSortableColumn="phone">
+                <div class="flex justify-content-between align-items-center">
+                  Phone
+                </div>
+              </th>
+              <th pSortableColumn="is_active">
+                <div class="flex justify-content-between align-items-center">
+                  Status
+                </div>
+              </th>
+              <th></th>
+            </tr>
+          </ng-template>
+        
+          <ng-template pTemplate="body" let-companydata>
+            <tr class="p-selectable-row">
+              <td>{{ companydata.company_name }}</td>
+              <td>{{ companydata.email }}</td>
+              <td>{{ companydata.phone }}</td>
+              <td>
+                <p-tag [value]="getStatusValue(companydata.is_active)" 
+                       [severity]="getSeverity(companydata.is_active)" 
+                       (click)="statusUpdate($event, companydata.is_active, companydata.company_id)">
+                </p-tag>
+              </td>
+              <td style="text-align: center">
+                <i class="bi bi-three-dots" style="font-size: 14px;" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                  <li><a class="dropdown-item" (click)="updatePopup(companydata.company_id)"><i class="bi bi-pencil-square"></i>&nbsp;Edit</a></li>
+                  <li><a class="dropdown-item" (click)="deleteCompany($event, companydata.company_id)"><i class="bi bi-trash"></i>&nbsp;Delete</a></li>
+                </ul>
+              </td>
+            </tr>
+          </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8">No company found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+
+        <p-toast></p-toast>
+        <p-confirmPopup></p-confirmPopup>
+
+</div>
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="AddCompanyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header mb-3">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Company Registration</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form (ngSubmit)="onCompanyRegister(companyForm)" #companyForm="ngForm">
+            <div class="form-group">
+              <input type="text" name="company_name" [(ngModel)]="companyInsert.company_name" placeholder="Enter company name" required #company_name="ngModel">
+              <label for="company_name">Company Name</label>
+              <div *ngIf="submitted && company_name.invalid" class="invalid-feedback">
+                Company Name is required.
+              </div>
+            </div>
+        
+            <div class="form-group">
+              <input type="email" name="email" [(ngModel)]="companyInsert.email" placeholder="Enter email address" #email="ngModel" email>
+              <label for="email">Email</label>
+              <div *ngIf="submitted && email.invalid && email.value" class="invalid-feedback">
+                <div *ngIf="email.errors?.['email']">Email must be a valid email address.</div>
+              </div>
+            </div>
+        
+            <div class="form-group">
+              <input type="text" name="phone" [(ngModel)]="companyInsert.phone" placeholder="Enter phone number" minlength="10" maxlength="10" #phone="ngModel" pattern="^\d{10}$" (keypress)="validateNumber($event)">
+              <label for="phone_no">Phone</label>
+              <div *ngIf="submitted && phone.invalid && phone.value" class="invalid-feedback">
+                <div *ngIf="phone.errors?.['pattern']">Phone must be 10 digits.</div>
+              </div>
+            </div>
+        
+            <div class="error_msg col-md-12 mb-3" *ngIf="errorMessageView">
+              <i class="fa fa-times-circle"></i>&nbsp;{{ errorMessage }}
+            </div>
+        
+            <div class="form-group">
+              <button class="save-btn" type="submit">Register</button>
+            </div>
+          </form>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+  <!-- update modal -->
+
+  
+  <p-dialog header="Update Company" [(visible)]="updateModalVisible" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false" [resizable]="false">
+    <form class="mt-4" (ngSubmit)="onUpdateCompany()">
+      <div class="form-group">
+        <input type="text" [(ngModel)]="companyUpdateModel.company_name" name="company_name" placeholder="Enter company name" required>
+        <label for="company_name">Company Name</label>
+        <div *ngIf="submitted && !companyUpdateModel.company_name" class="invalid-feedback">
+          Company Name is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="email" [(ngModel)]="companyUpdateModel.email" name="email" placeholder="Enter email address">
+        <label for="email">Email</label>
+        <div *ngIf="submitted && emailInvalid" class="invalid-feedback">
+          <div>Email must be a valid email address.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="text" [(ngModel)]="companyUpdateModel.phone" name="phone" placeholder="Enter phone number" minlength="10" maxlength="10" (keypress)="validateNumber($event)">
+        <label for="phone">Phone</label>
+        <div *ngIf="submitted && phoneInvalid" class="invalid-feedback">
+          <div>Phone must be 10 digits.</div>
+        </div>
+      </div>
+      <div class="error_msg col-md-12 mb-3" *ngIf="errorMessageView">
+        <i class="fa fa-times-circle"></i>&nbsp;{{ errorMessage }}
+      </div>
+      <div class="form-group">
+        <button class="save-btn" type="submit">Update</button>
+      </div>
+    </form>
+  </p-dialog>
+  
+
+

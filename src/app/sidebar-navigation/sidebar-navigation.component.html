@@ -1,0 +1,162 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-light">
+    <div class="container-fluid">
+        <!-- <img src="assets/images/logo (2).png" alt="Logo" height="40"> -->
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            
+        </a>
+
+        <!-- Navbar toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list" ></i>
+        </button>
+        <!-- Navbar content -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+           
+                <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                    <i class="bi bi-list"></i></a>
+           
+            <!-- Search input -->
+
+            <!-- Icons and user profile -->
+            <ul class="navbar-nav ms-auto">
+              
+                <li class="nav-item mt-1">
+                    <a class="nav-link" href="#"><i class="bi bi-arrows-fullscreen"></i></a>
+                </li>
+                <li class="nav-item mt-1">
+                    <a class="nav-link" href="#"><i class="bi bi-bell"></i></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="assets/icons/user-icon.png" class="rounded-circle" alt="Profile" style="width:30px; height:30px;"> 
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i>&nbsp;&nbsp;Profile</a></li>
+                        <li><a class="dropdown-item" (click)="logout()"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;Logout</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item mt-1">
+                    <a class="nav-link" href="#"><i class="bi bi-gear"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="background-color: #171735;">
+    <div class="offcanvas-header">
+        <div class="header-img">
+            <img src="assets/images/Group 866.png" class="image--logo" />
+        </div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"  style="color: aliceblue;"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start mt-4 " id="menu" >
+            <!-- <li class="nav-item">
+                <a routerLink="/dashboard" class="nav-link align-middle px-0" data-bs-dismiss="offcanvas" >
+                    <i class="fs-4 bi-speedometer2" style="color: aliceblue;"></i> 
+                    <span class="nav-text ms-4 d-none d-sm-inline" style="color: aliceblue;">Dashboard</span>
+                </a>
+            </li> -->
+            <div *ngIf="adminNav">
+                <li class="nav-item">
+                    <a routerLink="/deliverynote" class="nav-link align-middle px-1" data-bs-dismiss="offcanvas">
+                        <i class="fs-4 bi-journals" style="color: aliceblue;"></i> 
+                        <span class="nav-text ms-4 d-none d-sm-inline" style="color: aliceblue;">Delivery note</span>
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/companylist" class="nav-link px-0 align-middle" data-bs-dismiss="offcanvas">
+                        <i class="fs-4 bi-building" style="color: aliceblue;"></i>
+                        <span class="nav-text ms-4 d-none d-sm-inline" style="color: aliceblue;">Company</span></a>
+                </li>
+                <li>
+                    <a routerLink="/employeelist" class="nav-link px-0 align-middle" data-bs-dismiss="offcanvas">
+                        <i class="fs-4 bi-people" style="color: aliceblue;"></i>
+                        <span class="nav-text ms-4 d-none d-sm-inline" style="color: aliceblue;">Employee</span></a>
+                </li>
+            </div>
+            <div *ngIf="operatorNav">
+                <li class="nav-item">
+                    <a routerLink="/deliverynote" class="nav-link align-middle px-1" data-bs-dismiss="offcanvas">
+                        <i class="fs-4 bi-journals" style="color: aliceblue;"></i> 
+                        <span class="nav-text ms-4 d-none d-sm-inline" style="color: aliceblue;">Delivery note</span>
+                    </a>
+                </li>
+            </div>
+           
+            <!-- <li>
+                <a routerLink="/equipmentlist" class="nav-link px-0 align-middle" data-bs-dismiss="offcanvas">
+                    <i class="fs-4 bi-list-columns-reverse" style="color: aliceblue;"></i>
+                    <span class="nav-text ms-4 d-none d-sm-inline" style="color: aliceblue;">Equipment</span></a>
+            </li> -->
+           <!--  <li>
+                <a routerLink="/equipmenttimecard" class="nav-link px-0 align-middle" data-bs-dismiss="offcanvas">
+                    <i class="fs-4 bi-calendar3" style="color: aliceblue;"></i>
+                    <span class="nav-text ms-4 d-none d-sm-inline" style="color: aliceblue;">Equipment Time Card</span></a>
+            </li>
+            <li>
+                <a routerLink="/pettycash" class="nav-link px-0 align-middle" data-bs-dismiss="offcanvas">
+                    <i class="fs-4 bi-credit-card-2-front"></i>
+                    <span class="nav-text ms-4 d-none d-sm-inline">Payment</span></a>
+            </li> -->
+            <!-- <li>
+                <a routerLink="/delivery-form-view" class="nav-link px-0 align-middle" data-bs-dismiss="offcanvas">
+                    <i class="fs-4 bi-shop-window" style="color: aliceblue;"></i>
+                    <span class="nav-text ms-4 d-none d-sm-inline" style="color: aliceblue;">Delivery Form</span></a>
+            </li> -->
+            <!-- <li>
+                <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                    <i class="fs-4 bi-bootstrap"></i> 
+                    <span class="nav-text ms-4 d-none d-sm-inline">Bootstrap</span></a>
+                <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                    <li class="w-100">
+                        <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                    <i class="fs-4 bi-grid"></i>
+                    <span class="nav-text ms-4 d-none d-sm-inline">Products</span> </a>
+                    <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
+                    <li class="w-100">
+                        <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 2</a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 3</a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 4</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="nav-link px-0 align-middle">
+                    <i class="fs-4 bi-people"></i>
+                    <span class="nav-text ms-4 d-none d-sm-inline">Customers</span> </a>
+            </li> -->
+        </ul>
+
+
+
+    
+    </div>
+  </div>
+
+  <div class="wrapper-container">
+       
+        <router-outlet></router-outlet>
+  </div>
+
+
+
+

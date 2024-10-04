@@ -1,0 +1,6 @@
+<!-- 
+ <app-login *ngIf="!isLoggedIn"></app-login > -->
+    <app-sidebar-navigation *ngIf="isLoggedIn"></app-sidebar-navigation>
+
+
+    <router-outlet *ngIf="!isLoggedIn"></router-outlet>

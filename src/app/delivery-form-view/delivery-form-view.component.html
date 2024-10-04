@@ -1,0 +1,536 @@
+<div class="container" *ngIf="deliveryFormView">
+    <p-toast></p-toast>
+    <h3>DELIVERY NOTE</h3>
+    <div class="card p-4" style="margin-top: 20px;">
+
+          <form class="row" [formGroup]="deliveryNoteUpdateForm"  >
+            <div class="col-md-8" *ngIf="!isUpdated">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Company Name</label>
+                        <input type="text" formControlName="company_name" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Equipment</label>
+                        <select formControlName="type_id" (change)="getEquipmentCapacity($event)" required>
+                            <option value="" ></option>
+                            <option *ngFor="let option of equipmentName" [value]="option.type_id">{{ option.type}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Capacity</label>
+                        <select formControlName="capacity_id">
+                            <option value="" disabled></option>
+                            <option *ngFor="let option of equipmentCapacity" [value]="option.capacity_id">{{ option.capacity}}</option>
+                        </select>
+                    </div>
+  
+                    <div class="form-group col-md-6">
+                        <label>Driver</label>
+                        <input type="text" formControlName="driver_name" readonly>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" formControlName="vehicle_no">
+                        <label for="companyName">Vehicle Number</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" formControlName="loading_site">
+                        <label for="companyName">Loading Site</label>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" formControlName="off_loading_site">
+                        <label for="companyName">Offloading Site</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="datetime-local" formControlName="arrival_at_loading_site">
+                        <label for="companyName">Arrival at Loading site</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="datetime-local" formControlName="departure_at_loading_site">
+                        <label for="companyName">Departure From Loading site</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="datetime-local" formControlName="arrival_at_offloading_site">
+                        <label for="companyName">Arrival at Offloading site</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="datetime-local" formControlName="departure_at_offloading_site">
+                        <label for="companyName">Departure From Offloading site</label>
+                        <input type="text" style="margin-top: 35px;" formControlName="contact_no" minlength="10" maxlength="10" (input)="validateNumber($event)">
+                        <label for="companyName"style="margin-top: 75px;">Contact Number</label>
+                        <div *ngIf="showNonNumericError">
+                          <small class="text-danger">Only numbers are allowed</small>
+                        </div>
+                        <div *ngIf="showInvalidLengthError1">
+                          <small class="text-danger">Number must be exactly 10 digits</small>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <textarea type="text" style="height:113px" formControlName="remarks"></textarea>
+                        <label for="companyName">Remarks</label>
+                    </div>
+                   
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                      <textarea type="text" style="height:113px" formControlName="goods_details" name="goods_details"></textarea>
+                      <label for="companyName">Goods Details</label>
+                    </div>
+                  </div>
+            </div>
+  
+            <div class="form2 col-md-4" [ngStyle]="{ display: !isUpdated ? 'block' : 'none' }">
+                <div class="form-group">
+                    <input type="text" formControlName="receiver_name">
+                    <label for="companyName">Reciever Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="receiver_no" maxlength="10" formControlName="receiver_no" (input)="validateNumber2($event)">
+                    <label>Receiver Number</label>
+                    <div *ngIf="showNonNumericError2">
+                        <small class="text-danger">Only numbers are allowed</small>
+                    </div>
+                    <div *ngIf="showInvalidLengthError2">
+                      <small class="text-danger">Number must be exactly 10 digits</small>
+                    </div>
+                  </div>
+
+                <div class="form-group">
+                    <label for="companyName">Signature</label>
+                    <div style="height:154px;border:1px solid #a0a0a0;border-radius: 15px;display: flex;justify-content: center;">
+                      <canvas #signatureCanvasUpdate 
+                              class="signature-box" 
+                              [ngStyle]="{'pointer-events': isCanvasDisabled ? 'none' : 'auto'}">
+                      </canvas>   
+                    </div>
+                    <div class="d-flex justify-content-end">
+                      <button class="button-14" role="button" style="background-color: rgb(201, 201, 201);" (click)="clearSignature()">Clear</button>
+                      <button class="button-14" role="button" 
+                              [ngStyle]="{
+                                  'background-color': isSignatureSaved ? 'green' : 'rgb(241, 61, 61)', 
+                                  'color': 'aliceblue'
+                              }" 
+                              (click)="saveSignature()"
+                              [innerText]="isSignatureSaved ? 'Saved' : 'Save'">
+                      </button>
+                    </div>
+                  </div>
+
+                <div class="form-group mt-5" style="float: inline-end;">
+                    <button class="submit-btn" (click)="onUpdateDeliveryNote()">Submit</button>
+                </div>
+            </div>
+          </form>
+
+
+
+          <form class="row" [formGroup]="deliveryNoteUpdateForm" *ngIf="isUpdated">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Company Name</label>
+                        <input type="text"  name="company_name"  [value]="deliveryView?.company_name" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Equipment</label>
+                        <input type="text" name="type"  [value]="deliveryView?.type" readonly>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Capacity</label>
+                        <input type="text" name="capacity" [value]="deliveryView?.capacity" readonly>
+
+                    </div>
+  
+                    <div class="form-group col-md-6">
+                        <label>Driver</label>
+                        <input type="text"  name="driver_name" [value]="deliveryView?.driver_name" readonly>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" name="vehicle_no" [value]="deliveryView?.vehicle_no" readonly>
+                        <label for="companyName">Vehicle Number</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" name="loading_site" [value]="deliveryView?.loading_site" readonly>
+                        <label for="companyName">Loading Site</label>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" name="off_loading_site" [value]="deliveryView?.off_loading_site" readonly>
+                        <label for="companyName">Offloading Site</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" name="arrival_at_loading_site" [value]="formatedDate(deliveryView?.arrival_at_loading_site)" readonly>
+                        <label for="companyName">Arrival at Loading site</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" name="departure_at_loading_site" [value]="formatedDate(deliveryView?.departure_at_loading_site)" readonly>
+                        <label for="companyName">Departure From Loading site</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" name="arrival_at_offloading_site" [value]="formatedDate(deliveryView?.arrival_at_offloading_site)" readonly>
+                        <label for="companyName">Arrival at Offloading site</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" name="departure_at_offloading_site" [value]="formatedDate(deliveryView?.departure_at_offloading_site)" readonly>
+                        <label for="companyName">Departure From Offloading site</label>
+                        <input type="text" style="margin-top: 35px;" name="contact_no" [value]="deliveryView?.contact_no" readonly>
+                        <label for="companyName"style="margin-top: 75px;">Contact Number</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <textarea type="text" style="height:113px" name="remarks" [value]="deliveryView?.remarks" readonly></textarea>
+                        <label for="companyName">Remarks</label>
+                    </div>
+                   
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                      <textarea type="text" style="height:113px" name="goods_details" [value]="deliveryView?.goods_details" readonly></textarea>
+                      <label for="companyName">Goods Details</label>
+                    </div>
+                  </div>
+            </div>
+  
+            <div class="form2 col-md-4">
+                <div class="form-group">
+                    <input type="text"  name="receiver_name" [value]="deliveryView?.receiver_name" readonly>
+                    <label for="companyName">Reciever Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="receiver_no"  [value]="deliveryView?.receiver_no" readonly>
+                    <label>Receiver Number</label>
+                  </div>
+
+                <div class="form-group" *ngIf="IsignatureExist">
+                    <label>Signature</label>
+                    <div style="height:154px;border:1px solid#a0a0a0;border-radius: 15px;">
+                        <img [src]="signaturebase64" height="150"  style="width: 100%;">   
+                    </div>
+                </div>
+
+                <div class="form-group mt-5" style="float: inline-end;">
+                    <div *ngIf="IsignatureExist">
+                        <i class="bi bi-file-earmark-arrow-down-fill" (click)="generatePDF()" style="font-size: 23px;margin-left: 39px;"></i>
+                        <p (click)="generatePDF()" style="font-size: 12px;cursor: pointer;">Download as PDF</p>
+                    </div>
+                </div>
+            </div>
+          </form>
+
+
+    </div>
+
+      <!-- =================== Print Form ==================== -->
+ 
+      <div #pdfContent style="width:1107px;margin-top:200px;display: none;">
+        <div class="form-card">
+                        <div class="header-title-p">
+                            <h3>DELIVERY NOTE</h3>
+                            <input style="width: 196px;
+                            border: none;
+                            height: 32px;
+                            margin: -43px 0px 0px 53px;
+                            border-radius: 0px 0px 62px 0px;
+                            ">
+                            <p style="margin-top: -28px;">Date : <span style="color: black;margin-left:20px">{{deliveryView?.inserted_date|date}}</span></p>
+                           
+                        </div>
+                        <div class="header-img">
+                          <img src="assets/images/Group 866.png" class="image--logo" />
+                          <h2>جود ويل للنقل العام ذ.م.م</h2>
+                          <h6>GOODWILL GENERAL TRANSPORT L.L.C</h6>
+                      </div>
+            <div class="mt-4 mb-4">
+                <p style="margin-left: 3.2rem;font-weight: 700;font-size: 20px;">DN No: {{deliveryView?.ddn_id}}</p>
+            </div>
+    
+            <form  style="background-color: white;padding-left: 50px;padding-right: 50px;">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="card-body" style="border: 3px solid #707070">
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Company Name</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" class="form-control form-input" name="company_name"  [value]="deliveryView?.company_name" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">اسم الشركة</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Equipment</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text"  class="form-control form-input" name="type"  [value]="deliveryView?.type" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">معدات</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Capacity</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="capacity" [value]="deliveryView?.capacity" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">سعة</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Driver Name</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="driver_name" [value]="deliveryView?.driver_name" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">سائق اسم</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Vehicle No</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="vehicle_no" [value]="deliveryView?.vehicle_no" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">عربة ة رقم</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Loading Site</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="loading_site" [value]="deliveryView?.loading_site" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">موقع التحميل</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Off Loading Site</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="off_loading_site" [value]="deliveryView?.off_loading_site" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">موقع التفريغ</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Arrival at Loading Site</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="arrival_at_loading_site" [value]="formatedDate(deliveryView?.arrival_at_loading_site)" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">وصوله في تحميل الموقع</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Departure From Loading Site</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="departure_at_loading_site" [value]="formatedDate(deliveryView?.departure_at_loading_site)" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">رحيل من تحميل الموقع</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Arrival at Offloading Site</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="arrival_at_offloading_site" [value]="formatedDate(deliveryView?.arrival_at_offloading_site)" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">وصوله في التفريغ الموقع</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Departure From Offloading Site</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="departure_at_offloading_site" [value]="formatedDate(deliveryView?.departure_at_offloading_site)" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">رحيل من التفريغ الموقع</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Contact Number</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="contact_no" [value]="deliveryView?.contact_no" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">رقم الاتصال</h6>
+                            </div>
+    
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Goods Details</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <textarea type="text" id="companyName" class="form-control form-input" name="goods_details" [value]="deliveryView?.goods_details" readonly></textarea>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">وصف المنتج</h6>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <h6 class="print-h6-eng mt-2">Remarks</h6>
+                            </div>
+                            <div class="col-sm-5 text-secondary" >
+                                <input type="text" id="companyName" class="form-control form-input" name="remarks" [value]="deliveryView?.remarks" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6 class="print-h6-arabic mt-2">ملاحظات</h6>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+    
+            </div>
+            </form>
+        </div>
+            <div class="wrapper p-5">
+                <div class="footer">
+                    <form >
+                        <div class="row">
+                            <p class="col-sm-4 ">
+                                I acknowledge that 3 hours are allowed for loading and 3 hours for unloading free of charge.
+                                Any time beyond this will incur extra charges as per the contract.
+                                I have received and inspected the goods in good condition.
+                            </p>
+                        
+                            <div class="col-sm-8" style="margin-top: -25px;">
+                                
+                                <div class="row">
+                                    
+                                    <div class="col-sm-4 input-container" style="width: 307px;">
+                                        <label for="receiverName">Receiver Name & Number</label>
+                                        <div style="margin-top: 11px;">
+                                            <input type="text" id="receiverName" class="form-control form-input" name="receiver_name" [value]="deliveryView?.receiver_name" readonly>
+                                            <hr style="margin-top: -1px; color: rgb(105, 103, 103);">
+                                            <input type="text" id="receiverName" style="margin-top:-9px" class="form-control form-input" name="receiver_no"  [value]="deliveryView?.receiver_no" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4  input-container" style="width: 302px;">
+                                        <label for="receiverName">Signature</label>
+                                        <div style="margin-top:0px;"> 
+                                          <img #signatureImage [src]="signaturebase64" height="90" style="width: 100%;margin-top: 6px;" />
+                                          
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <footer>
+              <div class="footer-container ">
+                <div class="row d-flex justify-content-center">
+                  <div class="col-md-3 d-flex" style="width: 210px;">
+                      <img src="assets/icons/call.png" height="32" style="margin-top: 12px;">
+                      <div class="footer-p">
+                        <p style="margin-top: 22px;margin-bottom: 0px;">+971 55 200 3275</p>
+                        <p>+971 50 546 0503</p>
+                      </div>
+                      
+                  </div>
+                  <div class="col-md-3 d-flex" style="width: 220px;">
+                    <img src="assets/icons/website.png" height="30" style="margin-top: 15px;">
+                    <div class="footer-p">
+                      <p style="margin-top: 20px;">www.goodwilltpt.ae</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3 d-flex" style="width: 250px;">
+                    <img src="assets/icons/envelope.png" height="35" style="margin-top: 12px;">
+                    <div class="footer-p">
+                      <p style="margin-top: 22px;margin-bottom: 0px;">info@goodwilltpt.ae</p>
+                      <p>inform.ggt@gmail.com</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3 d-flex" style="width: 350px;">
+                    <img src="assets/icons/round.png" height="29" style="margin-top: 15px;">
+                    <div class="footer-p">
+                      <p style="margin-top: 22px;margin-bottom: 0px;">Office No:19, Mafraq Industrial Area-6,</p>
+                      <p>P.O.Box:8732, Abu Dhabi - UAE</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </footer>
+
+    </div>
+    <!-- --------------------Print Form End-------------------------- -->
+ 
+</div>
+
+
+<!-- Error -->
+
+
+<div class="error-container" *ngIf="!deliveryFormView">
+    
+    	<div class="fof">
+        		<h1>Error 404</h1>
+    	</div>
+
+</div>

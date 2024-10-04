@@ -1,0 +1,144 @@
+<div class="banner">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="title1">
+                <img src="https://i2.cdn.turner.com/cnnnext/dam/assets/140926165711-john-sutter-profile-image-large-169.jpg" alt="" class="image--cover" />
+                <img src="assets/images/Group 866.png" class="image--logo" />
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="wrapper">
+    <div class="wrapper-container">
+        <div class="division1">
+            <div class="row">
+                <div class="col-sm"> <h5>Petty Cash Account</h5></div>
+                <div class="col-sm d-flex justify-content-end">
+                    <select  class="month-dropdown">
+						<option value="">Month</option>
+						<option value="01">January</option>
+						<option value="02">February</option>
+						<option value="03">March</option>
+						<option value="04">April</option>
+						<option value="05">May</option>
+						<option value="06">June</option>
+						<option value="07">July</option>
+						<option value="08">August</option>
+						<option value="09">September</option>
+						<option value="10">October</option>
+						<option value="11">November</option>
+						<option value="12">December</option>
+					</select>
+				</div>
+			</div>
+        </div>
+
+        <div class="division2">
+            <div class="row">
+                <div class="col-md d-flex"> <p>Monthly Income</p><span>16,000</span></div>
+			</div>
+            <div class="row">
+                <div class="col-md d-flex"> <p>Monthly Expense</p><span>16,000</span></div>
+			</div>
+            <div class="row">
+                <div class="col-md d-flex"><h5>Balance</h5><h4>16,000</h4></div>
+			</div>
+        </div>
+
+        <div class="division3">
+            <div class="row">
+                <div class="col-md d-flex justify-content-center"> 
+                    <button class="button-1" role="button" style="background-color: #c8d7d2;" (click)="onPaymentClick()">Payment</button>
+                </div>
+                <div class="col-md d-flex justify-content-center">
+                    <button class="button-1" role="button" style="background-color: #fc8888;">Transfer</button>
+                </div>
+			</div>
+        </div>
+      
+    </div>
+</div>
+
+<div class="wrapper2" style="margin-top: -83px;">
+    <div class="container">
+        <div class="">
+            <p>13 June 2024</p>
+            <hr style="color: rgb(233, 37, 37);border:2px solid;opacity:0.8;">
+            <div>
+                <table id="resizeMe" class="resizable-table table spaced-row">
+                    <tbody>
+                      <tr class="mb-1">
+                        <td>ABC Company</td>
+                        <td>Fuel</td>
+                        <td>120.00</td>
+                      </tr>
+                      <tr>
+                        <td>ABC Company</td>
+                        <td>Fuel</td>
+                        <td>120.00</td>
+                      </tr>
+                    </tbody>
+                  </table>
+               
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+
+<p-dialog header="Update Delivery Note" [(visible)]="paymentModalVisible" [modal]="true" [style]="{ width: '40vw' }" [draggable]="false" [resizable]="false">
+
+    <div class="modal-body mt-3">
+        <form class="row">
+          <div>
+              <div class="row">
+                  <div class="form-group col-md-6">
+                      <input type="text">
+                      <label for="companyName">Vehicle Number</label>
+                  </div>
+                  <div class="form-group col-md-6">
+                      <input type="text">
+                      <label for="companyName">Loading Site</label>
+                  </div>
+              </div>
+  
+              <div class="row">
+                  <div class="form-group col-md-6">
+                      <input type="text">
+                      <label for="companyName">Offloading Site</label>
+                  </div>
+                  <div class="form-group col-md-6">
+                      <input type="text">
+                      <label for="companyName">Arrival at Loading site</label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="form-group col-md-6">
+                      <input type="text">
+                      <label for="companyName">Departure at Loading site</label>
+                  </div>
+                  <div class="form-group col-md-6">
+                      <input type="text">
+                      <label for="companyName">Arrival at Offloading site</label>
+                  </div>
+              </div>
+
+              <div class="form-group" style="float: inline-end;">
+                  <button class="save-btn">Update</button>
+              </div>
+          </div>
+        
+
+      
+        </form>
+
+        
+      </div>
+
+</p-dialog>
