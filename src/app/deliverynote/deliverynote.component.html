@@ -556,7 +556,7 @@
 
       <!-- =================== Print Form ==================== -->
  
-<div #pdfContent style="width:1107px;margin-top:200px;display: none;">
+<div #pdfContent style="width:1107px;margin-top:200px;">
     <div class="form-card">
                     <div class="header-title-p">
                         <h3>DELIVERY NOTE</h3>
@@ -587,7 +587,7 @@
                           <h6 class="print-h6-eng mt-2">Company Name</h6>
                         </div>
                         <div class="col-sm-5 text-secondary" >
-                            <input type="text" class="form-control form-input" name="company_name"  [value]="deliveryView?.company_name" readonly>
+                            <textarea type="text" class="form-control form-input" name="company_name"  [value]="deliveryView?.company_name" readonly></textarea>
                         </div>
                         <div class="col-sm-3">
                           <h6 class="print-h6-arabic mt-2">اسم الشركة</h6>

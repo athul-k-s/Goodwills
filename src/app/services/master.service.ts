@@ -15,8 +15,8 @@ export class MasterService {
     'Authorization': `Bearer ${this.accessToken}`
   });
 
- //base_url='https://api.abrahamantonya.com/api/';
- base_url='https://localhost:7139/api/';
+ base_url='https://api.abrahamantonya.com/api/';
+// base_url='https://localhost:7139/api/';
 
   //---------------------- Authentication------------------
 
