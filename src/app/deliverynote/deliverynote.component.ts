@@ -656,46 +656,44 @@ onSearch(): void {
     const pdfContent = this.pdfContent.nativeElement;
     if (pdfContent) {
       pdfContent.style.display = 'block';
-
-      // Ensure all images are fully loaded before generating the PDF
+  
       const images = pdfContent.getElementsByTagName('img');
-
-      
-      const promises = [];
+      const promises: Promise<void>[] = [];
+  
       for (let i = 0; i < images.length; i++) {
         const img = images[i];
         if (!img.complete) {
-          promises.push(new Promise((resolve, reject) => {
-            img.onload = () => {
-              resolve;
-            };
+          promises.push(new Promise<void>((resolve, reject) => {
+            img.onload = resolve;
             img.onerror = () => {
-              console.error('Error loading image:', img.src);  
+              console.error('Error loading image:', img.src);
               reject();
             };
           }));
-        } else {
-
         }
       }
+  
       let canvas!: HTMLCanvasElement;
       try {
         await Promise.all(promises);
-
-
-        // Use a higher scale for better resolution and set appropriate options
-        canvas = await html2canvas(pdfContent, { scale: 2, useCORS: true, allowTaint: false });
-        document.body.appendChild(canvas);  // Append canvas to DOM for visual inspection
+  
+        // Use a lower scale (1.5) to reduce size, with CORS enabled
+        canvas = await html2canvas(pdfContent, {
+          scale: 1.5,
+          useCORS: true,
+          allowTaint: false
+        });
+  
         const imgWidth = 208;
         const pageHeight = 295;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        const contentDataURL = canvas.toDataURL('image/png');
-        let pdf = new jsPDF('p', 'mm', 'a4');
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const contentDataURL = canvas.toDataURL('image/jpeg', 0.75); // Use JPEG with 75% quality
+  
+        const pdf = new jsPDF('p', 'mm', 'a4');
         let position = 0;
-
-        // Ensure contentDataURL is valid and add image to the PDF
+  
         if (contentDataURL) {
-          pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+          pdf.addImage(contentDataURL, 'JPEG', 0, position, imgWidth, imgHeight);
           pdf.save('delivery-note.pdf');
         } else {
           console.error('Generated contentDataURL is not valid');
@@ -704,7 +702,7 @@ onSearch(): void {
         console.error('Error generating PDF:', error);
       } finally {
         if (canvas) {
-          document.body.removeChild(canvas);  // Remove canvas after inspection
+          document.body.removeChild(canvas);
         }
         pdfContent.style.display = 'none';
       }
@@ -712,6 +710,7 @@ onSearch(): void {
       console.error('The element to generate PDF is not found.');
     }
   }
+  
 
 
 }
